@@ -19,6 +19,45 @@
 // Clearing the shell using escape sequences
 #define clear() printf("\033[H\033[J")
 
+// Command Data Structure
+// Describes a simple command and arguments
+struct SimpleCommand {
+    // Available space for arguments currently preallocated
+    int _numberOfAvailableArguments;
+
+    // Number of arguments
+    int _numberOfArguments;
+
+    // Array of arguments
+    char** _arguments;
+
+    SimpleCommand();
+    void insertArgument(char* argument);
+};
+
+// Describes a complete command with multiple pipes, if any,
+// and input/output redirection, if any.
+struct Command {
+    int _numberOfAvailableSimpleCommands;
+    int _numberOfSimpleCommands;
+    SimpleCommand** _simpleCommands;
+    char* _outFile;
+    char* _inputFile;
+    char* _errFile;
+    int _background;
+
+    void prompt();
+    void print();
+    void execute();
+    void clear();
+
+    Command();
+    void insertSimpleCommand(SimpleCommand* simpleCommand);
+
+    static Command _currentCommand;
+    static SimpleCommand* _currentSimpleCommand;
+};
+
 // Function Prototypes
 void init_shell(void);
 char* prompt1(void);
